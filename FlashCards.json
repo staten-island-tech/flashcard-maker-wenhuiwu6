@@ -1,10 +1,10 @@
 [
     {
         "question": "Capital of France",
-        "answer": "Paris"
+        "key": "Paris"
     },
     {
         "question": "Chemical symbol of water",
-        "answer": "H2O"
+        "key": "H2O"
     }
 ]
