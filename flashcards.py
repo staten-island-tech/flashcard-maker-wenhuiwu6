@@ -1,59 +1,46 @@
 import json
-def add_flashcard():
-    try:
-        with open("FlashCards.json", "r") as file:
-            flash_card = json.load(file)
-    except FileNotFoundError:
-        flash_card = []
 
-    word = input("Enter a word/phrase: ")
-    answer = input("Enter the answer: ")
+def save_flashcards(flashcards):
+    with open("FlashCards.json", 'w') as file:
+        json.dump(flashcards, file, indent=4)
+        print("Saved")
+
+def add_flashcards():
+    try:
+        with open("FlashCards.json", 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return {}
 
 def teacher_mode():
+    flashcards = add_flashcards()
+    print("Teacher Mode")
     while True:
-        print("\nTeacher Mode:")
-        print("1. Add Flashcard")
-        print("2. Exit")
-        
-        choice = input("Enter your choice: ")
-        
-        if choice == "1":
-            add_flashcard()
-        elif choice == "2":
+        key = input("Enter a word/phrase or 'exit' to leave): ")
+        if key.lower() == 'exit':
             break
-        else:
-            print("Invalid")
+        value = input("Enter the answer: ")
+        flashcards[key] = value
+    save_flashcards(flashcards)
+    print("Flashcards saved")
 
-def student_mode():
-    flashcards = load_flashcards()
+
+""" def student_mode():
+    flashcards = add_flashcards()
     if not flashcards:
+        print("No flashcards found. Please ask a teacher to add some.")
         return
-    
-    correct_answers = 0
+
+    print("=== Student Mode ===")
+    score = 0
     streak = 0
-    total = len(flashcards)
-    
-    random.shuffle(flashcards)  # Shuffle the flashcards for random order
-    
-    for card in flashcards:
-        print(f"\nWhat is the answer to: {card['word']}")
-        answer = input("Your answer: ").strip()
-        
-        if answer.lower() == card['answer'].lower():
-            print("Correct!")
-            correct_answers += 1
+
+    for question, answer in flashcards.items():
+        user_answer = input(f"What is the answer to: '{question}'? ")
+        if user_answer.strip().lower() == answer.strip().lower():
             streak += 1
-            if streak >= 3:
-                print(f"Bonus points! Streak of {streak} correct answers!")
-        else:
-            print(f"Incorrect! The correct answer is: {card['answer']}")
-            streak = 0  # Reset streak on incorrect answer
-
-    # Display the final score
-    print(f"\nYour score: {correct_answers}/{total}")
-    print(f"Bonus Streak Points: {streak}")
-    print(f"Total Score: {correct_answers + streak}")
-
+            points = 1 + (streak - 1)
+            print(f"Correct! +{points} point(s). Streak: {streak}") """
 
 
 
